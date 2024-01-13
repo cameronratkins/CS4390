@@ -1,9 +1,23 @@
-The overall goal of working on this and the next phase is to learn the foundations of using Tensorflow/Keras to build, train, and evaluate convolutional neural networks on an image dataset. The project’s main objective is to design, implement, debug, evaluate, and benchmark deep convolutional neural network (CNN) architectures. If you are learning machine learning for the first time, a multi-class classification problem will probably be easier (not a regression problem). A problem is ‘multi-class classification’ if your output column has multiple options (cat, dog, horse, or a house). You will also compare the accuracy and speed of various CNN architectures. Finally, you will study how data augmentation, regularization, and transfer learning can improve accuracy. You are welcome to use Google docsLinks to an external site. and/or the free version of GrammarlyLinks to an external site. to revise your writing.
+The overall goal of working on this and the next phase is to learn the foundations of using Tensorflow/Keras to build, train, and evaluate 
+convolutional neural networks on an image dataset. The project’s main objective is to design, implement, debug, evaluate, and benchmark 
+deep convolutional neural network (CNN) architectures. If you are learning machine learning for the first time, a multi-class classification 
+problem will probably be easier (not a regression problem). A problem is ‘multi-class classification’ if your output column has multiple 
+options (cat, dog, horse, or a house). You will also compare the accuracy and speed of various CNN architectures. Finally, you will study 
+how data augmentation, regularization, and transfer learning can improve accuracy. You are welcome to use Google docsLinks to an 
+external site. and/or the free version of GrammarlyLinks to an external site. to revise your writing.
 Please continue to use the dataset that you chose for Phase I.
 
 Task 1. 
 Build an overfitting model
-The objective in this task is to design a convolutional neural network (not feed-forward neural network) to overfit your dataset. Before working on this task, please watch the lectures in “Chapter 8”, the “Classify MNIST digits using a CNN” and the “Pitfalls in designing CNNs..”, in particular. Also, practice this notebookLinks to an external site. to learn how to use an image data generator. It demonstrates how to train a model by loading data from ImageDataGenerators. If you don’t already have one, you will start this phase by creating a similar notebook to load your data. Using all your data (i.e., without splitting), your goal is to design the smallest possible CNN that delivers close to 100% accuracy. Please pay careful attention to the total number of parameters of your model. “Small” refers to the number of parameters, not the number of layers. For example, designing a model with only one Conv2D and one Dense layer will overfit in just a few epochs. But ‘practically’, this is NOT a convolutional neural network because most of the learning/heavy-lifting is done by the Dense layer. For example, you can start with the following model:
+The objective in this task is to design a convolutional neural network (not feed-forward neural network) to overfit your dataset. 
+Before working on this task, please watch the lectures in “Chapter 8”, the “Classify MNIST digits using a CNN” and the “Pitfalls in 
+designing CNNs..”, in particular. Also, practice this notebookLinks to an external site. to learn how to use an image data generator. 
+It demonstrates how to train a model by loading data from ImageDataGenerators. If you don’t already have one, you will start this 
+phase by creating a similar notebook to load your data. Using all your data (i.e., without splitting), your goal is to design the 
+smallest possible CNN that delivers close to 100% accuracy. Please pay careful attention to the total number of parameters of your model. 
+“Small” refers to the number of parameters, not the number of layers. For example, designing a model with only one Conv2D and one Dense 
+layer will overfit in just a few epochs. But ‘practically’, this is NOT a convolutional neural network because most of the 
+learning/heavy-lifting is done by the Dense layer. For example, you can start with the following model:
 
 model = Sequential()
 model.add( Conv2D( 64, ( 3, 3 ), activation = 'relu', input_shape = xtrain[0, :, :, :].shape ) )
@@ -14,9 +28,8 @@ model.add( Conv2D( 16, ( 3, 3 ), activation = 'relu' ) )
 model.add( Flatten() )
 model.add( Dense( 10, activation = 'relu' ) )
 model.add( Dense( 10, activation = 'softmax' ) )
-In your report, you should discuss how the performance (accuracy, precision, recall, etc.) changes when the number of filters and layers are increased/decreased. Also, include your learning curves.
 
-# When using generators, you can calculate precision, recall, F1-score, etc. using the following idea (roughly)
+When using generators, you can calculate precision, recall, F1-score, etc. using the following idea (roughly)
 Y = [] # empty list of true labels
 P = [] # empty list of predictions
 for i in range(?):
@@ -27,9 +40,9 @@ for i in range(?):
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 accuracy = accuracy_score(Y, p.round())
-Debugging tip. You may run into errors while working on this task. Here is a debugging tip: print the type(?), len(?), and/or .shape of all the variables you are working with.
+Debugging tip. You may run into errors while working on this task. Here is a debugging tip: print the type(?), len(?), 
+and/or .shape of all the variables you are working with.
 
-[Requirement for graduate students only] If you provide the output as the input (as an additional channel), what is the smallest architecture (minimum number of layers and filters) you need to overfit the data? Discuss this in your report and submit your notebook. Here is an example code that shows you how to add the output as an additional input channel.
 
 # Example of how to use output labels as additional input channel
 import numpy as np
@@ -55,6 +68,13 @@ for i in range(1000):
    mydatax[i, :, :, :3 ] = x # Existing image in the first three channels
    mydatax[i, :, :, 3 ] = y.reshape(256, 256, 1) # Label value as the last channel
    mydatay[i] = y
-Task 2. 
-Split and evaluate on test set
-The objective in this task is to obtain highest possible accuracy on the validation set by designing your own CNN. Please note that the reason for randomly splitting ahead of time (and not at runtime) is ‘reproducibility’. Next, train a model using the training set implementing ‘Earlystopping’ and ‘model checkpointing’ observing the accuracy on the validation set. Your goal is to revise your architecture until you find the architecture that yields the highest accuracy on the validation set. Please study how the accuracy changes when the hyperparameters, such as, the number of filters, layers, etc., are increased and decreased. You should also plot your learning curves and include them in your report. Your final evaluation will be on the independent test. Hint: The trick is to create three folders – training, validation, and testing – and then create three separate data generators.
+
+Task 2: Split and evaluate on test set
+The objective in this task is to obtain highest possible accuracy on the validation set by designing your own CNN. 
+Please note that the reason for randomly splitting ahead of time (and not at runtime) is ‘reproducibility’. 
+Next, train a model using the training set implementing ‘Earlystopping’ and ‘model checkpointing’ observing the accuracy 
+on the validation set. Your goal is to revise your architecture until you find the architecture that yields the highest 
+accuracy on the validation set. Please study how the accuracy changes when the hyperparameters, such as, the number of 
+filters, layers, etc., are increased and decreased. You should also plot your learning curves and include them in your report. 
+Your final evaluation will be on the independent test. Hint: The trick is to create three folders – training, validation, and testing – 
+and then create three separate data generators.
